@@ -42,14 +42,13 @@ const send = async (to, amount, asset, secret) => {
     }
 
     let sendTx = new stellar.TransactionBuilder(senderAcc, txOptions)
-        .addOperation(stellar.Operation.createAccount(escrowAccountConfig))
+        .addOperation(stellar.Operation.payment(txConfig))
         .setTimeout(stellar.TimeoutInfinite)
         .build()
 
     sendTx.sign(sender)
     await server.submitTransaction(sendTx)
 
-    return escrowPair
 }
 
 module.exports = { newUser, send}
