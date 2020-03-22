@@ -1,30 +1,68 @@
-
 const stellar = require('stellar-sdk')
 const fetch = require('node-fetch')
 const config = require('../config/config')
 const argv = require('yargs').argv
 const chainFee = 0.001
-const server = 'https://horizon-testnet.stellar.org'
+let serverURL = 'https://horizon-testnet.stellar.org'
+let networks = stellar.Networks.TESTNET
 
-if(config.network == 'testnet'){
-  stellar.Network.useTestNetwork()
-} else {
-  stellar.Network.usePublicNetwork()
-  server = 'https://horizon.stellar.org'
+if(config.network !== 'testnet'){
+    networks = stellar.Networks.PUBLIC
+    serverURL = 'https://horizon.stellar.org'
 }
 
 const newUser = async () => {
-    const keys = stellar.Keypair.random()
-    const response = await fetch(`https://friendbot.stellar.org?addr=${encodeURIComponent(keys.publicKey())}`)
+    const keys = await stellar.Keypair.random()
+
+    if(config.network === 'testnet'){   
+        const response = await fetch(`https://friendbot.stellar.org?addr=${encodeURIComponent(keys.publicKey())}`)
+    }else{
+        const to = keys.publicKey()
+        const amount = '1'
+        const asset = 'lumens'
+        const secret = config.stellarFundingAccount
+        const sender = await stellar.Keypair.fromSecret(secret)
+        const server = new stellar.Server(serverURL)
+
+        let senderAcc
+        try {
+            senderAcc = await server.loadAccount(sender.publicKey())
+        } catch (e) {
+            console.log('unable to load buyer account: ' + e)
+            throw (e)
+        }
+
+        const txConfig = {
+            destination: to,
+            startingBalance: amount
+        }
+
+        const txOptions = {
+            fee: await server.fetchBaseFee(),
+            networkPassphrase: networks
+        }
+
+        let sendTx
+        try{
+            sendTx = await new stellar.TransactionBuilder(senderAcc, txOptions)
+                .addOperation(stellar.Operation.createAccount(txConfig))
+                .setTimeout(stellar.TimeoutInfinite)
+                .build()
+
+            sendTx.sign(sender)
+            await server.submitTransaction(sendTx)
+        }catch(e) {
+            console.log('couldn\'t do transaction: ' + e)
+            throw(e)
+        }
+    }
+    
     return { privateKey: keys.secret(), address: keys.publicKey() }
 }
 
 const send = async (to, amount, asset, secret) => {
-    const server = new stellar.Server(server)
-
-    const sender = stellar.Keypair.fromSecret(secret)
-
-
+    const server = new stellar.Server(serverURL)
+    const sender = await stellar.Keypair.fromSecret(secret)
     let senderAcc
     try {
         senderAcc = await server.loadAccount(sender.publicKey())
@@ -36,19 +74,29 @@ const send = async (to, amount, asset, secret) => {
     const total = amount + chainFee
 
     const txConfig = {
-        destination: to.publicKey(),
+        destination: to,
         asset: stellar.Asset.native(),
         amount: total.toString()
     }
 
-    let sendTx = new stellar.TransactionBuilder(senderAcc, txOptions)
-        .addOperation(stellar.Operation.payment(txConfig))
-        .setTimeout(stellar.TimeoutInfinite)
-        .build()
+    const txOptions = {
+        fee: await server.fetchBaseFee(),
+        networkPassphrase: networks
+    }
+
+    let sendTx
+    try{
+        sendTx = await new stellar.TransactionBuilder(senderAcc, txOptions)
+            .addOperation(stellar.Operation.payment(txConfig))
+            .setTimeout(stellar.TimeoutInfinite)
+            .build()
+    }catch(e) {
+        console.log('couldn\'t do transaction: ' + e)
+        throw(e)
+    }
 
     sendTx.sign(sender)
     await server.submitTransaction(sendTx)
-
 }
 
 module.exports = { newUser, send}

@@ -5,6 +5,11 @@ const argv = require('yargs').argv
 const hostConfig = {
     port: argv.port || 3000,
     chain: argv.chain || 'stellar',
-    network: argv.chain || 'testnet'
+    network: argv.network || 'testnet',
+    awsRegion: argv.region,
+    kmsKeyID: argv.kmsKeyID,
+    awsAccessKey: argv.awsAccessKey,
+    awsSecretKey: argv.awsSecretKey,
+    stellarFundingAccount: argv.stellarAccount
 }
 module.exports = hostConfig

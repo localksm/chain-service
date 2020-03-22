@@ -1,11 +1,12 @@
-const config = require('./config/config')
 const express = require('express')
+const app = express()
 const bodyParser = require('body-parser')
 const { check, validationResult, param } = require('express-validator')
-const app = express()
-const port = config.port
+const config = require('./config/config')
 const chain = require ('./chain')
-
+const getKeys = require('./kms')
+const port = config.port
+const chainName = config.chain;
 
 const middleware = [
   bodyParser.json(),
@@ -25,7 +26,7 @@ app.get('/create_account', async (req, res) => {
     if(!errors.isEmpty())
       return res.status(422).json({ errors: errors.array() })
 
-    res.setTimeout(3000);
+    //res.setTimeout(3000)
     let datos = await chain.createAccount()
     return res.status(200).send(datos)
 
@@ -35,10 +36,10 @@ app.get('/create_account', async (req, res) => {
 })
 
 const sendCheck = [
-  check('secret').exists().trim().escape(),
+  check('sender_kms_key').exists().trim().escape(),
+  check('receiver_kms_key').exists().trim().escape(),
   check('amount').exists().trim().escape(),
-  check('asset').exists().trim().escape(),
-  check('to').exists().trim().escape()
+  check('asset').exists().trim().escape()
 ]
 
 app.post('/send', sendCheck, async (req, res) => {
@@ -47,9 +48,12 @@ app.post('/send', sendCheck, async (req, res) => {
     if(!errors.isEmpty())
       return res.status(422).json({ errors: errors.array() })
 
-    res.setTimeout(3000);
-
-    const { secret,  amount, asset, to } = req.body
+    //res.setTimeout(3000)
+    const { amount, asset, receiver_kms_key, sender_kms_key } = req.body
+    const kmsKeys = await getKeys(sender_kms_key.toString())
+    const receiverKeys = await getKeys(receiver_kms_key.toString())
+    const secret = kmsKeys['keys'][chainName]['private_key']
+    const to = receiverKeys['keys'][chainName]['public_key']
 
     await chain.send(to, amount, asset, secret)
     return res.status(200).send("Send finished!")
