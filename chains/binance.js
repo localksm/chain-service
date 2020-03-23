@@ -1,14 +1,19 @@
-
-const config = require('../config/config')
 const BncClient = require('@binance-chain/javascript-sdk')
-const api = 'https://testnet-dex.binance.org/'; /// api string
-const axios = require('axios');
+const axios = require('axios')
+const config = require('../config/config')
 const chainFee = 0.001
+let api = 'https://testnet-dex.binance.org/'
 
+if(config.network !== 'testnet'){
+    api = 'https://dex.binance.org/'
+}
 
 const newUser = async () => {
     const client = new BncClient(api)
     await client.initChain()
+    if(config.network !== 'testnet'){
+        client.chooseNetwork(config.network)
+    }
     return client.createAccount()
 }
 
@@ -20,8 +25,6 @@ const send = async (to, amount, asset, secret) => {
   await bnbClient.initChain();
 
   const sender = await bnbClient.getClientKeyAddress(); // sender address string (e.g. bnb1...)
-
-
   const total = amount + chainFee
   const httpClient = axios.create({ baseURL: api });
   const sequenceURL = `${api}api/v1/account/${sender}/sequence`;

@@ -1,12 +1,13 @@
 {
   "dependencies": {
+    "@binance-chain/javascript-sdk": "^2.16.3",
+    "aws-sdk": "^2.642.0",
+    "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "express-validator": "^6.4.0",
-    "yargs": "^13.2.2",
-    "axios": "^0.19.2",
-    "stellar-sdk": "^1.0.4",
     "node-fetch": "^2.6.0",
-    "@binance-chain/javascript-sdk": "^2.16.3"
+    "stellar-sdk": "^1.0.4",
+    "yargs": "^13.2.2"
   }
 }
