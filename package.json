@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "binance-dev": "node chain_service.js --region=\"us-east-2\" --kmsKeyID=\"8d5d39f4-9f34-4f6e-b84e-541f415a8ce7\" --awsAccessKey=\"AKIAI3MXTHOXP2GQWDYA\" --awsSecretKey=\"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\" --chain=\"binance\" --network=\"testnet\"",
+    "binance-prod": "node chain_service.js --region=\"us-east-2\" --kmsKeyID=\"8d5d39f4-9f34-4f6e-b84e-541f415a8ce7\" --awsAccessKey=\"AKIAI3MXTHOXP2GQWDYA\" --awsSecretKey=\"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\" --chain=\"binance\" --network=\"mainnet\""
+  },
   "dependencies": {
     "@binance-chain/javascript-sdk": "^2.16.3",
     "aws-sdk": "^2.642.0",

@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  binance-service:
+    build: .
+    container_name: binance-service
+    volumes:
+      - .:/src/
+      # Prevent hiding node_module on container with host volume
+      - /src/node_modules
+    ports:
+    - "3000:3000"
