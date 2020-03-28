@@ -25,7 +25,7 @@ const send = async (to, amount, asset, secret) => {
   await bnbClient.initChain();
 
   const sender = await bnbClient.getClientKeyAddress(); // sender address string (e.g. bnb1...)
-  const total = amount + chainFee
+  const total = parseFloat(amount) + parseFloat(chainFee)
   const httpClient = axios.create({ baseURL: api });
   const sequenceURL = `${api}api/v1/account/${sender}/sequence`;
 

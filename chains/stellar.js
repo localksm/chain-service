@@ -71,7 +71,7 @@ const send = async (to, amount, asset, secret) => {
         throw (e)
     }
 
-    const total = amount + chainFee
+    const total = parseFloat(amount) + parseFloat(chainFee)
 
     const txConfig = {
         destination: to,
