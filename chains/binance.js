@@ -1,5 +1,6 @@
 const BncClient = require('@binance-chain/javascript-sdk')
 const axios = require('axios')
+const fetch = require('node-fetch')
 const config = require('../config/config')
 const chainFee = 0.001
 let api = 'https://testnet-dex.binance.org/'
@@ -48,4 +49,10 @@ const send = async (to, amount, asset, secret) => {
     });
 }
 
-module.exports = { newUser, send}
+const fee = async () => {
+  const aux = await fetch(`${api}api/v1/fees`);
+  const res = await aux.json();
+  return res; 
+}
+
+module.exports = { newUser, send, fee }

@@ -10,4 +10,8 @@ const send = async(to, amount, asset, secret) =>{
   await chain.send(to, amount, asset, secret)
 }
 
-module.exports = {createAccount, send}
+const fee = async () => {
+  return await chain.fee()
+}
+
+module.exports = {createAccount, send, fee}
