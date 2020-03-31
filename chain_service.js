@@ -63,4 +63,23 @@ app.post('/send', sendCheck, async (req, res) => {
   }
 })
 
+app.get('/fees/:chain', async (req, res) => {
+  const _chainName = req.params.chain;
+  
+  // Validate params
+  const isStellar = _chainName === 'stellar';
+  const isBinance = _chainName === 'binance';
+  
+  if(isStellar || isBinance){
+    try {      
+      const networkFees = await chain.fee();      
+      res.status(200).send({ airprotocolFee:0.001, _chainName, networkFees })
+    } catch (e) {
+      res.status(500).send(e.message);
+    }
+  } else {
+    res.status(400).send('Chain not found');
+  }
+})
+
 app.listen(port, () => console.log(`Server listening on port ${port}!`))

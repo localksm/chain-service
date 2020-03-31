@@ -71,7 +71,7 @@ const send = async (to, amount, asset, secret) => {
         throw (e)
     }
 
-    const total = amount + chainFee
+    const total = parseFloat(amount) + parseFloat(chainFee)
 
     const txConfig = {
         destination: to,
@@ -99,4 +99,10 @@ const send = async (to, amount, asset, secret) => {
     await server.submitTransaction(sendTx)
 }
 
-module.exports = { newUser, send}
+const fee = async () => {
+    const aux = await fetch(`${serverURL}/fee_stats`);
+    const res = await aux.json();
+    return res; 
+}
+
+module.exports = { newUser, send, fee}
