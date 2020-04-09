@@ -7,7 +7,7 @@ const createAccount = async () => {
 }
 
 const send = async(to, amount, asset, secret) =>{
-  await chain.send(to, amount, asset, secret)
+  return await chain.send(to, amount, asset, secret)
 }
 
 const fee = async () => {

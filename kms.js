@@ -17,7 +17,7 @@
 
 // Load the AWS SDK
 let AWS = require("aws-sdk"),
-  region = "us-east-2"
+  region = "us-east-1"
 const config = require('./config/config')
 
 async function getKeys(secretName) {

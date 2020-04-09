@@ -96,7 +96,7 @@ const send = async (to, amount, asset, secret) => {
     }
 
     sendTx.sign(sender)
-    await server.submitTransaction(sendTx)
+    return await server.submitTransaction(sendTx)
 }
 
 const fee = async () => {

@@ -5,8 +5,20 @@ const { check, validationResult, param } = require('express-validator')
 const config = require('./config/config')
 const chain = require ('./chain')
 const getKeys = require('./kms')
-const port = config.port
+const RemittancesPoller = require("./scheduled_remittances_polling");
+const port = config.port;
 const chainName = config.chain;
+
+let poller = new RemittancesPoller(process.env.INTERVAL);
+
+// Wait till the timeout sent our event to the EventEmitter
+poller.onPoll(() => {
+  poller.processScheduledRemittances();
+  poller.poll(); // Go for the next poll
+});
+
+// Initial start
+poller.poll();
 
 const middleware = [
   bodyParser.json(),
