@@ -1,7 +1,9 @@
 {
   "scripts": {
-    "binance-dev": "node chain_service.js --region=\"us-east-2\" --kmsKeyID=\"8d5d39f4-9f34-4f6e-b84e-541f415a8ce7\" --awsAccessKey=\"AKIAI3MXTHOXP2GQWDYA\" --awsSecretKey=\"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\" --chain=\"binance\" --network=\"testnet\"",
-    "binance-prod": "node chain_service.js --region=\"us-east-2\" --kmsKeyID=\"8d5d39f4-9f34-4f6e-b84e-541f415a8ce7\" --awsAccessKey=\"AKIAI3MXTHOXP2GQWDYA\" --awsSecretKey=\"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\" --chain=\"binance\" --network=\"mainnet\""
+    "stellar-dev": "env INTERVAL=180000 POSTGRES_DB=\"\" POSTGRES_HOST=\"\" POSTGRES_USER=\"\" POSTGRES_PASS=\"\" POSTGRES_PORT=5435 node chain_service.js --port=3030 --region=\"\" --kmsKeyID=\" \" --awsAccessKey=\"\" --awsSecretKey=\"\" --chain=\"stellar\" --network='testnet'",
+    "stellar-prod": "env INTERVAL=180000 POSTGRES_DB=\"\" POSTGRES_HOST=\"\" POSTGRES_USER=\"\" POSTGRES_PASS=\"\" POSTGRES_PORT=5435 node chain_service.js --port=3030 --region=\"\" --kmsKeyID=\" \" --awsAccessKey=\"\" --awsSecretKey=\"\" --chain=\"stellar\" --network='mainnet'",
+    "binance-dev": "env INTERVAL=180000 POSTGRES_DB=\"\" POSTGRES_HOST=\"\" POSTGRES_USER=\"\" POSTGRES_PASS=\"\" POSTGRES_PORT=5435 node chain_service.js --port=3030 --region=\"\" --kmsKeyID=\" \" --awsAccessKey=\"\" --awsSecretKey=\"\" --chain=\"binance\" --network='testnet'",
+    "binance-prod": "env INTERVAL=180000 POSTGRES_DB=\"\" POSTGRES_HOST=\"\" POSTGRES_USER=\"\" POSTGRES_PASS=\"\" POSTGRES_PORT=5435 node chain_service.js --port=3030 --region=\"\" --kmsKeyID=\" \" --awsAccessKey=\"\" --awsSecretKey=\"\" --chain=\"binance\" --network='mainnet'"
   },
   "dependencies": {
     "@binance-chain/javascript-sdk": "^2.16.3",
@@ -11,6 +13,8 @@
     "express": "^4.17.1",
     "express-validator": "^6.4.0",
     "node-fetch": "^2.6.0",
+    "pg": "^8.0.0",
+    "sequelize": "^5.21.6",
     "stellar-sdk": "^1.0.4",
     "yargs": "^13.2.2"
   }
