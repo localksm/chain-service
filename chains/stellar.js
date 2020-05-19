@@ -3,7 +3,7 @@ const fetch = require('node-fetch')
 const config = require('../config/config')
 const argv = require('yargs').argv
 const chainFee = 0.001
-let serverURL = 'http://localhost:8000'
+let serverURL = 'https://horizon-testnet.stellar.org'	
 let networks = stellar.Networks.TESTNET
 
 if(config.network !== 'testnet'){
