@@ -60,7 +60,7 @@ const newUser = async () => {
     return { privateKey: keys.secret(), address: keys.publicKey() }
 }
 
-const send = async (to, amount, asset, secret) => {
+const send = async (to, amount, asset, secret, from) => {
     const server = new stellar.Server(serverURL)
     const sender = await stellar.Keypair.fromSecret(secret)
     let senderAcc

@@ -4,10 +4,11 @@
     "stellar-prod": "env INTERVAL=180000 POSTGRES_DB=\"\" POSTGRES_HOST=\"\" POSTGRES_USER=\"\" POSTGRES_PASS=\"\" POSTGRES_PORT=5435 node chain_service.js --port=3030 --region=\"\" --kmsKeyID=\" \" --awsAccessKey=\"\" --awsSecretKey=\"\" --chain=\"stellar\" --network='mainnet'",
     "binance-dev": "env INTERVAL=180000 POSTGRES_DB=\"\" POSTGRES_HOST=\"\" POSTGRES_USER=\"\" POSTGRES_PASS=\"\" POSTGRES_PORT=5435 node chain_service.js --port=3030 --region=\"\" --kmsKeyID=\" \" --awsAccessKey=\"\" --awsSecretKey=\"\" --chain=\"binance\" --network='testnet'",
     "binance-prod": "env INTERVAL=180000 POSTGRES_DB=\"\" POSTGRES_HOST=\"\" POSTGRES_USER=\"\" POSTGRES_PASS=\"\" POSTGRES_PORT=5435 node chain_service.js --port=3030 --region=\"\" --kmsKeyID=\" \" --awsAccessKey=\"\" --awsSecretKey=\"\" --chain=\"binance\" --network='mainnet'",
-    "celo-dev": "env INTERVAL=180000 POSTGRES_DB=\"\" POSTGRES_HOST=\"\" POSTGRES_USER=\"\" POSTGRES_PASS=\"\" POSTGRES_PORT=5435 node chain_service.js --port=3031 --region=\"\" --kmsKeyID=\" \" --awsAccessKey=\"\" --awsSecretKey=\"\" --chain=\"celo\" --network='mainnet'"
+    "celo-dev": "env INTERVAL=180000 POSTGRES_DB=\"\" POSTGRES_HOST=\"\" POSTGRES_USER=\"\" POSTGRES_PASS=\"\" POSTGRES_PORT=5435 node chain_service.js --port=3031 --region=\"\" --kmsKeyID=\" \" --awsAccessKey=\"\" --awsSecretKey=\"\" --chain=\"celo\" --network='testnet'"
   },
   "dependencies": {
     "@binance-chain/javascript-sdk": "^2.16.3",
+    "@celo/contractkit": "^0.4.4",
     "aws-sdk": "^2.642.0",
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",

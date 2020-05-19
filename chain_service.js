@@ -61,14 +61,19 @@ app.post('/send', sendCheck, async (req, res) => {
       return res.status(422).json({ errors: errors.array() })
 
     //res.setTimeout(3000)
-    const { amount, asset, receiver_kms_key, sender_kms_key } = req.body
-    const kmsKeys = await getKeys(sender_kms_key.toString())
-    const receiverKeys = await getKeys(receiver_kms_key.toString())
-    const secret = kmsKeys['keys'][chainName]['private_key']
-    const to = receiverKeys['keys'][chainName]['public_key']
+    const { amount, asset, receiver_kms_key, sender_kms_key } = req.body;
+    const kmsKeys = await getKeys(sender_kms_key.toString());
+    const receiverKeys = await getKeys(receiver_kms_key.toString());
+    const secret = kmsKeys["keys"][chainName]["private_key"];
+    const to =
+      receiverKeys["keys"][chainName]["public_key"] ||
+      receiverKeys["keys"][chainName]["address"];
+    const from =
+      kmsKeys["keys"][chainName]["public_key"] ||
+      kmsKeys["keys"][chainName]["address"];
 
-    await chain.send(to, amount, asset, secret)
-    return res.status(200).send("Send finished!")
+    await chain.send(to, amount, asset, secret, from);
+    return res.status(200).send("Send finished!");
 
   }catch(error){
     return res.status(500).send(error.message)
