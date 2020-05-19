@@ -14,25 +14,28 @@ const web3 = new Web3();
 
 async function newUser() {
   const data = await web3.eth.accounts.create();
-  console.log(data);
 
   return data;
 }
 
 async function send(to, amount, asset, fromSecret, fromAddress) {
-  // 1. Add sender account to ContractKit to sign transactions  
-  kit.addAccount(fromSecret);
+  // 1. Add sender account to ContractKit to sign transactions
+  try {
+    kit.addAccount(fromSecret);
 
-  let stableToken = await kit.contracts.getStableToken();
+    let stableToken = await kit.contracts.getStableToken();
 
-  let tx = await stableToken.transfer(to, amount).send({ from: fromAddress });
+    let tx = await stableToken.transfer(to, amount).send({ from: fromAddress });
 
-  let receipt = await tx.waitReceipt();
+    let receipt = await tx.waitReceipt();
 
-  return receipt;
+    return receipt;
+  } catch (e) {
+    throw e;
+  }
 }
 
 module.exports = {
   newUser,
-  send
+  send,
 };
