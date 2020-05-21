@@ -16,6 +16,6 @@ RUN npm install --save bcrypt-nodejs && npm uninstall --save bcrypt
 RUN npm install
 COPY . .
 
-CMD [ "npm", "run", "binance-dev" ]
+CMD [ "npm", "run", "stellar-dev" ]
 
 EXPOSE 3000
