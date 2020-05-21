@@ -19,18 +19,17 @@ async function newUser() {
 }
 
 async function send(to, amount, asset, fromSecret, fromAddress) {
-  // 1. Add sender account to ContractKit to sign transactions
   try {
+    //1 usd = 0.1 cgold
     kit.addAccount(fromSecret);
 
-    let stableToken = await kit.contracts.getStableToken();
-
-    let tx = await stableToken.transfer(to, amount).send({ from: fromAddress });
+    let goldToken = await kit.contracts.getGoldToken();    
+    let tx = await goldToken.transfer(to, amount).send({ from: fromAddress });
 
     let receipt = await tx.waitReceipt();
 
     return receipt;
-  } catch (e) {
+  } catch (e) {    
     throw e;
   }
 }
