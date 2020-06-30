@@ -16,6 +16,6 @@ RUN npm install --save bcrypt-nodejs && npm uninstall --save bcrypt
 RUN npm install
 COPY . .
 
-CMD [ "npm", "run", "stellar-dev" ]
+CMD [ "npm", "run", "celo-dev" ]
 
 EXPOSE 3000

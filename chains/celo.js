@@ -18,18 +18,45 @@ async function newUser() {
   return data;
 }
 
-async function send(to, amount, asset, fromSecret, fromAddress) {
+async function send(to, amount, asset, fromSecret, fromAddress, iscGLD=false) {
+  if(asset === "cgld"){
+    await sendcGLD(fromSecret, fromAddress, to, amount)
+  } else {
+    await sendcUSD(to, amount, asset, fromSecret, fromAddress)
+  }
+}
+
+async function sendcUSD(to, amount, asset, fromSecret, fromAddress) {
   try {
-    //1 usd = 0.1 cgold
     kit.addAccount(fromSecret);
+    console.log(amount)
+    const weiAmount = kit.web3.utils.toWei(amount.toString(), 'ether')
+    const stabletoken = await kit.contracts.getStableToken();
 
-    let goldToken = await kit.contracts.getGoldToken();    
-    let tx = await goldToken.transfer(to, amount).send({ from: fromAddress });
-
-    let receipt = await tx.waitReceipt();
+    const tx = await stabletoken.transfer(to, weiAmount).send({ from: fromAddress });
+    const receipt = await tx.waitReceipt();
 
     return receipt;
-  } catch (e) {    
+  } catch (e) {
+    console.log(e)
+    throw e;
+  }
+}
+
+async function sendcGLD(secret, from, toAddress, amount){
+  try {
+    amount = kit.web3.utils.toWei(amount, 'ether');
+    kit.addAccount(secret)
+    let goldtoken = await kit.contracts.getGoldToken()  
+    let tx = await goldtoken.transfer(toAddress, amount).send({from})
+  
+    let receipt = await tx.waitReceipt()
+  
+    console.log('Transaction receipt: %o', receipt)
+  
+    return receipt;
+  } catch (e) {
+    console.log(e)
     throw e;
   }
 }

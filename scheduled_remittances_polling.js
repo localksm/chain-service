@@ -63,7 +63,30 @@ class RemittancesPoller extends EventEmitter {
         const senderKeys = await getKeys(senderKmsKey);
         const receiverKeys = await getKeys(receiverKmsKey);
 
+
         const secret =
+          senderKeys["keys"][
+            "celo"
+          ]["private_key"];
+
+        const fromAddress = senderKeys["keys"][
+          "celo"
+        ]["public_key"];
+        const to =
+          receiverKeys["keys"][
+            "celo"
+          ]["public_key"];
+
+          // Send transaction
+          await chain.send(
+          to,
+          remittance.requestAmount,
+          remittance.requestAsset,
+          secret,
+          fromAddress
+        );
+
+        /*const secret =
           senderKeys["keys"][
             remittance.requestAsset === "native" ? "stellar" : "binance"
           ]["private_key"];
@@ -78,7 +101,7 @@ class RemittancesPoller extends EventEmitter {
           remittance.requestAmount,
           remittance.requestAsset,
           secret
-        );
+        );*/
         remittance["success"] = "sent";
 
         // Insert remittance
@@ -96,9 +119,10 @@ class RemittancesPoller extends EventEmitter {
           date: new Date(Date.now()),
         });
       } catch (e) {
+        console.log(e);
         remittance["success"] = "failed";
 
-        await this.__insertRemittance(remittance);
+        //await this.__insertRemittance(remittance);
       }
     });
   };
