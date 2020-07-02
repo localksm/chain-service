@@ -1,6 +1,7 @@
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 const Keyring = require('@polkadot/keyring').default;
 const { encodeAddress } = require('@polkadot/util-crypto');
+const bip39 = require('bip39');
 
 // Construct
 const wsProvider = new WsProvider('wss://kusama-rpc.polkadot.io');
@@ -39,3 +40,20 @@ async function send(to, amount, asset, secret, from){
       throw e; 
     }
 }
+
+function newUser() {
+  // Create seed and mnemonic phrase
+  const mnemonic = bip39.generateMnemonic()
+  // Create an instance of the Keyring
+  const keyring = new Keyring({ type: 'ed25519' })
+  const pair = keyring.addFromUri(mnemonic)
+  // Get keys
+  const keys = keyring.getPair(pair.address)    
+  const keypairs = {
+      public_key: keys.address,
+      private_key: mnemonic,
+  }
+  return keypairs
+}
+
+module.exports = { newUser, send }
