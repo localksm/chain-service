@@ -10,6 +10,8 @@ const hostConfig = {
     kmsKeyID: argv.kmsKeyID,
     awsAccessKey: argv.awsAccessKey,
     awsSecretKey: argv.awsSecretKey,
-    stellarFundingAccount: argv.stellarAccount
+    stellarFundingAccount: argv.stellarAccount,
+    jwtSecret: argv.jwtSecret,
+
 }
 module.exports = hostConfig

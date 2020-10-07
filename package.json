@@ -5,7 +5,7 @@
     "binance-dev": "env INTERVAL=180000 POSTGRES_DB=\"\" POSTGRES_HOST=\"\" POSTGRES_USER=\"\" POSTGRES_PASS=\"\" POSTGRES_PORT=5435 node chain_service.js --port=3030 --region=\"\" --kmsKeyID=\" \" --awsAccessKey=\"\" --awsSecretKey=\"\" --chain=\"binance\" --network='testnet'",
     "binance-prod": "env INTERVAL=180000 POSTGRES_DB=\"\" POSTGRES_HOST=\"\" POSTGRES_USER=\"\" POSTGRES_PASS=\"\" POSTGRES_PORT=5435 node chain_service.js --port=3030 --region=\"\" --kmsKeyID=\" \" --awsAccessKey=\"\" --awsSecretKey=\"\" --chain=\"binance\" --network='mainnet'",
     "celo-dev": "env INTERVAL=180000 POSTGRES_DB=\"\" POSTGRES_HOST=\"\" POSTGRES_USER=\"\" POSTGRES_PASS=\"\" POSTGRES_PORT=5435 node chain_service.js --port=3031 --region=\"\" --kmsKeyID=\" \" --awsAccessKey=\"\" --awsSecretKey=\"\" --chain=\"celo\" --network='testnet'",
-    "kusama": "node chain_service.js --port=3031 --chain=\"kusama\""
+    "kusama": "node chain_service.js --port=3031 --chain=\"kusama\" --jwtSecret=\"secret\""
   },
   "dependencies": {
     "@binance-chain/javascript-sdk": "^2.16.3",
@@ -19,6 +19,7 @@
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "express-validator": "^6.4.0",
+    "jsonwebtoken": "^8.5.1",
     "node-fetch": "^2.6.0",
     "pg": "^8.0.0",
     "sequelize": "^5.21.6",
