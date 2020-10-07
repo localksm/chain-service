@@ -1,21 +1,20 @@
-FROM ubuntu:18.04
+FROM node:12
 
-RUN mkdir -p /usr/src/app/
+# Create app directory
 WORKDIR /usr/src/app
 
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
 COPY package*.json ./
 
-RUN apt update
-RUN apt install -y git cmake gcc build-essential nodejs npm curl
-RUN npm i -g n
-RUN n latest
-RUN npm install -g npm@3
-RUN npm i -g node-gyp
-RUN npm i -g yarn
-RUN npm install --save bcrypt-nodejs && npm uninstall --save bcrypt
 RUN npm install
+# If you are building your code for production
+# RUN npm ci --only=production
+
+# Bundle app source
 COPY . .
 
-CMD [ "npm", "run", "celo-dev" ]
+EXPOSE 3032
 
-EXPOSE 3000
+CMD [ "npm", "run", "kusama" ]
