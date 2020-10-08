@@ -13,9 +13,8 @@ async function send(to, amount, asset, secret, from) {
   //https://wiki.polkadot.network/docs/en/learn-accounts#for-the-curious-how-prefixes-work
   //SS58Prefix = 2  <-- Kusama
   const SS58Prefix = 2; //Should be determined in config as it's network specific
-
+  const api = await ApiPromise.create({ provider: wsProvider });
   try {
-    const api = await ApiPromise.create({ provider: wsProvider });
     const keyring = new Keyring(); //default curve ed25519
 
     const fromPair = keyring.addFromUri(secret); // Secret should be seed or mnemonic
@@ -34,6 +33,8 @@ async function send(to, amount, asset, secret, from) {
     }
     return jsonResp;
   } catch (e) {
+    console.log("Disconnecting from socket");
+    api.disconnect();
     return { error: e.toString() };
   }
 }
