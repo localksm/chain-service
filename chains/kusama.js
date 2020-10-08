@@ -25,11 +25,16 @@ async function send(to, amount, asset, secret, from) {
     const tx = api.tx.balances.transfer(toAddress, amount * multiplier);
 
     const result = await tx.signAndSend(fromPair);
-
-    api.disconnect();
-    return result.toJSON();
+    const jsonResp = result.toJSON();
+    
+    // Make sure we terminate the socket connection
+    if(wsProvider.isConnected()){
+      console.log("Disconnecting from socket");
+      api.disconnect();
+    }
+    return jsonResp;
   } catch (e) {
-    return { error: e };
+    return { error: e.toString() };
   }
 }
 
