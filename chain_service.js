@@ -61,7 +61,7 @@ app.post("/send", sendCheck, async (req, res) => {
       kmsKeys["keys"][chainName]["address"];
 
     const resp = await chain.send(to, amount, asset, secret, from);
-    return res.status(200).send({ status: "success", hash: resp });
+    return res.status(200).send({ hash: resp });
   } catch (error) {
     return res.status(500).send({ error: error.message });
   }
